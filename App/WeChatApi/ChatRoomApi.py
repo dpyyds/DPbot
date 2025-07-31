@@ -56,7 +56,7 @@ class ChatRoomApi:
             logger.error(f"获取群成员信息失败: {e}")
             return None
 
-    async def inviteMember(self, roomid: str, towxid: Union[str, List[str]], selfWxid: str) -> Optional[Dict]:
+    async def inviteMember(self, roomid: str, towxid: str, selfWxid: str) -> Optional[Dict]:
         """
         邀请成员加入群
         :param roomid: 群ID
@@ -65,15 +65,10 @@ class ChatRoomApi:
         :return: 邀请结果
         """
         try:
-            # 如果是单个wxid，转换为列表
-            if isinstance(towxid, str):
-                member_list = [towxid]
-            else:
-                member_list = towxid
 
             data = {
                 "ChatRoomName": roomid,
-                "ToWxids": member_list,
+                "ToWxids": towxid,
                 "Wxid": selfWxid
             }
             return await sendPostReq("Group/InviteChatRoomMember", data)
