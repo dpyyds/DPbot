@@ -132,6 +132,28 @@ DPbot是一个基于Python的机器人框架，支持插件化开发，提供了
    - 进入`App`文件夹
    - 安装依赖，`pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple`然后`python.exe -m pip install --upgrade pip`然后`pip install -r requirements-win.txt`
    - 其中处理语音需要依赖`ffmpeg`，自行百度安装
+   - 自定义设备信息，修改文件App/WeChatApi/LoginApi.py,
+   - ```
+         async def getIpadQr(self) -> Optional[Dict]:
+        """
+        获取二维码
+        """
+        try:
+            payload = {
+                "DeviceID": "123456",
+                "DeviceName": "iPhone18plus",
+                "Proxy": {
+                    "ProxyIp": "",
+                    "ProxyPassword": "",
+                    "ProxyUser": ""
+                }
+            }
+            return await sendPostReq("/Login/LoginGetQR", payload)
+        except Exception as e:
+            logger.error(f"获取二维码失败: {e}")
+            return None
+     ```
+     其中DeviceID和DeviceName随便修改一下，不要使用这个，否则会触发风控风险（疑似多人共用一台设备）
    - 启动机器人程序，CMD命令行下或者其他IDE程序中输入：`python main.py`
    - 首次登录，输入2
    - 修改机器人代码时只需关闭重启App程序即可，Redis和Wxapi保持常开即可
